@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,10 +16,39 @@ namespace IPmap
     {
         public uint Address { get; }
         public int CIDR { get; }
-        public static void IPParse(string[] args)
+        public static void Parse(string[] params) // allowing both x.x.x.x/y and x.x.x.x, y input.
         {
+            switch (params.length)
+            {
+                case 0:
+                    break; // Need to throw an exception here. I don't know the name of the exception to use
+                case 1: // The user inputted x.x.x.x/y notation.
+
+                case 2: // The user inputted x.x.x.x, y notation.
+                    try
+                    {
+                        string[] addressOctetsStrings = params.Split('.');
+                        int[] addressOctets = Array.ConvertAll(addressOctetsStrings, int.Parse);
+                        foreach (int  octet in addressOctets)
+                        {
+                            address = (addressOctets << 8) | (uint)octet;
+                        }
+                        /*
+                        uint mask = cidr == 0
+                            ? 0
+                            : uint.MaxValue << (32 - cidr); */ // This is to create a mask from the CIDR to be used for formatting the potential ip address into the proper ip network. It is done below with just bitwise shifting.
+                        
+                        
+
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e)
+                    }
+            }
 
         }
+
 
         public IPAddress(string dottedDecimalAddress, int cidr)
         {
@@ -36,7 +65,7 @@ namespace IPmap
 
         }
     }
-
+    
 
     public class IPmap
     {
